@@ -14,9 +14,9 @@ vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
 
--- next greatest remap ever : asbjornHaland
+-- next greatest remap ever
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
-vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set("n", "<leader>Y", [["+y]])
 
 vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d")
 
@@ -46,9 +46,9 @@ end)
 -- for neovide
 if vim.g.neovide then
   vim.keymap.set('n', '<C-s>', ':w<CR>') -- Save
-  vim.keymap.set('v', '<C-c>', '"+y') -- Copy
- -- vim.keymap.set('n', '<C-v>', '"+P') -- Paste normal mode
-  vim.keymap.set('v', '<C-v>', '"+P') -- Paste visual mode
-  vim.keymap.set('c', '<C-v>', '<C-R>+') -- Paste command mode
-  vim.keymap.set('i', '<C-v>', '<ESC>"+Pi') -- Paste insert mode
+  vim.keymap.set('v', '<C-S-c>', '"+y') -- Copy
+  vim.keymap.set('n', '<C-S-v>', '"+P') -- Paste normal mode
+  vim.keymap.set('v', '<C-S-v>', '"+P') -- Paste visual mode
+  vim.keymap.set('c', '<C-S-v>', '<C-R>+') -- Paste command mode
+  vim.keymap.set('i', '<C-S-v>', '<ESC>"+Pi') -- Paste insert mode
 end

@@ -17,7 +17,7 @@ if [ "$1" = "toggle" ]; then
 else
   while true; do
     powered=$(bluetoothctl show | rg Powered | cut -f 2- -d ' ')
-    status=$(bluetoothctl info)
+    status=$(bluetoothctl devices Connected)
     name=$(echo "$status" | rg Name | cut -f 2- -d ' ')
     mac=$(echo "$status" | head -1 | awk '{print $2}' | tr ':' '_')
 
@@ -29,7 +29,7 @@ else
     fi
 
     if [ "$powered" = "yes" ]; then
-      if [ "$status" != "Missing device address argument" ]; then
+      if [ "$status" != "" ]; then
         text="$name"
         icon=""
         color="#89b4fa"

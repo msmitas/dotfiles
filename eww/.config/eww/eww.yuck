@@ -5,17 +5,17 @@
       (top :screen screen))
     (box :orientation "v"
          :valign "center"
-         :class "middle" 
+         :class "middle"
       (center-top :screen screen)
       (middle :screen screen))
     (box :valign "end"
-         :class "segment-bottom" 
+         :class "segment-bottom"
       (bottom :screen screen))))
 
 (defwidget top [screen]
   (box :orientation "v"
-    ;(workspaces :screen {screen == 1 ? "eDP-1" : "HDMI-A-1"}) 
-    ;(workspaces : {screen == 1 ? "eDP-1" : "HDMI-A-1"}) 
+    ;(workspaces :screen {screen == 1 ? "eDP-1" : "HDMI-A-1"})
+    ;(workspaces : {screen == 1 ? "eDP-1" : "HDMI-A-1"})
     (systray :orientation "v" :icon-size 15 :spacing 10)))
   ;(workspaces :wsp_yuck {screen == 1 ? workspaces_1_yuck : workspaces_2_yuck}))
 
@@ -52,24 +52,26 @@
 
 (defwidget middle [] (time))
 (defwidget time []
-  (box :orientation "v" 
+  (box :orientation "v"
        :class "time"
     hour min sec))
 
 
 (defwidget metric [icon ?font-size]
-  (box :class "metric" 
+  (box :class "metric"
        :orientation "v"
     (label :class "metric-label"
-    :style {font-size != "" ? "font-size: ${font-size}rem;" : ""} 
+    :style {font-size != "" ? "font-size: ${font-size}rem;" : ""}
            :text icon)
     (children)))
 
-(defwidget bottom [screen] 
+(defwidget bottom [screen]
   (box :orientation "v"
        :valign "end"
        :space-evenly true
        :spacing "5"
+
+    (bluetooth)
 
     (volume)
 
@@ -79,11 +81,11 @@
 
     (metric :icon "ram" "${round(EWW_RAM.used_mem_perc, 0)}")
 
-    (metric :icon "/" 
+    (metric :icon "/"
             :font-size 0.8
       "${round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}")
 
-    (metric :icon "󰋞" 
+    (metric :icon "󰋞"
             :font-size 0.8
       "${round((1 - (EWW_DISK["/home"].free / EWW_DISK["/home"].total)) * 100, 0)}")
 
@@ -102,13 +104,13 @@
         (button :onclick "swaync-client -t"
           (label :text notification-status))))
 
-;(defwidget ;bluetooth []
-;  (button
-;    :class "module-bt module icon"
-;    :onclick "blueberry"
-;    :tooltip "${bluetooth.text} ${bluetooth.batt_icon}"
-;    :style "color: ${bluetooth.color};"
-;    {bluetooth.icon} ))
+(defwidget bluetooth []
+  (button
+    :class "module-bt module icon"
+    :onclick "kitty bluetui &"
+    :tooltip "${bluetooth.text} ${bluetooth.batt_icon}"
+   ; :style "color: ${bluetooth.color};"
+    "${bluetooth.icon}"))
 
 (defwidget volume []
   (box :class "volume-metric"
@@ -116,9 +118,9 @@
        :space-evenly true
        :valign "fill"
        :vexpand false
-    (scale :orientation "h" 
+    (scale :orientation "h"
            :min 0
-           :max 100 
+           :max 100
            :onchange "pamixer --set-volume $(echo {} | sed 's/\\..*//g')"
            :value volume)
     (eventbox :onscroll "if [ '{}' == 'down' ]; then pamixer -i 5; else pamixer -d 5; fi"
@@ -130,7 +132,7 @@
         ; (button :onclick "rofi -show rofi-sound -modi 'rofi-sound:rofi-sound-output-chooser' &"
         (button :onclick "pavucontrol &"
                 ; :onrightclick "./audio.sh toggle"
-                
+
           (label :text audio_sink))))))
 
 
@@ -138,8 +140,8 @@
   (label :class "metric-icon large-symbol" :text sym))
 
 (defwidget date []
-  (box :orientation "v" 
-       :halign "center" 
+  (box :orientation "v"
+       :halign "center"
     day_word day month_word))
 
 ; TODO make this not hacky
@@ -149,7 +151,7 @@
 (deflisten notification-status :initial "󰂜" "./notification.sh symbol")
 (deflisten notification-status-class :initial "" "./notification.sh class")
 (deflisten workspaces :initial "[{}, {}, {}, {}, {}, {}, {}, {}, {}]" "./hypr.sh workspaces left")
-;(deflisten bluetooth "bluetooth")
+(deflisten bluetooth "./bluetooth.sh")
 
 (defpoll battery-level :interval "1s"	"./battery.sh percent")
 (defpoll battery-icon :interval "1s" "./battery.sh icon")
